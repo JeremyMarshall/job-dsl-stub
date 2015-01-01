@@ -1,2 +1,6 @@
 job-dsl-stub-plugin.iml
 .idea
+target
+.DS_Store
+work
+
