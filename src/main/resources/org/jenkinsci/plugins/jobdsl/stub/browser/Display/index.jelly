@@ -13,17 +13,53 @@
       <p>${%These are the methods available to job-dsl from within your installed plugins.}</p>
       <f:form method="post" name="config" action="configSubmit">
         <f:block>
-          <f:property field="factory"/>
+          <table>
+            <j:forEach  var="cat" items="${it.factory.categoriesAsList}" >
+              <tr>
+                <td><f:readOnlyTextbox value="${cat.name}"/></td>
+                <td><f:readOnlyTextbox value="${cat.description}"/></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <j:forEach var="c" items="${cat.classes}">
+                <tr>
+                  <td></td>
+                  <td><f:readOnlyTextbox value="${c.name}"/></td>
+                  <td><f:readOnlyTextbox value="${c.description}"/></td>
+                  <td></td>
+                </tr>
 
-          <!--
-          <f:repeatable var="instance" items="${descriptor.factory}" noAddButton="true">
-              xxx
-          </f:repeatable>
-          -->
+                <j:forEach var="m" items="${c.methods}">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td><f:readOnlyTextbox value="${m.name}"/></td>
+                    <td><f:readOnlyTextbox value="${m.description}"/></td>
+                  </tr>
+
+                  <j:forEach var="p" items="${m.parameters}">
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td><f:readOnlyTextbox value="${p.type} ${p.name}"/></td>
+                      <!--<td><f:readOnlyTextbox value="${p.description}"/></td>-->
+                    </tr>
+                  </j:forEach>
+
+                </j:forEach>
+
+              </j:forEach>
+            </j:forEach>
+          </table>
         </f:block>
+
+        <!--
         <f:block>
           <f:submit value="${%Save}"/>
         </f:block>
+        -->
+
       </f:form>
     </l:main-panel>
   </l:layout>

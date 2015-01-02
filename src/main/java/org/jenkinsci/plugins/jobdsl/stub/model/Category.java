@@ -20,17 +20,46 @@ import java.util.TreeMap;
 public class Category extends AbstractDescribableImpl<Category> implements Comparable, Describable<Category> {
 
     private CategoryEnum type;
-    private List<Base> classes;
+    private List<Class> classes;
+    private String name;
+    private String description;
 
-    public Category(CategoryEnum c) {
-        type = c;
-        classes = new ArrayList<Base>();
+    public Category(Base b) {
+        type = b.getCategory();
+        name = b.getName();
+        description = b.getDescription();
+
+        classes = new ArrayList<Class>();
     }
 
     public Base add(Base a) {
-        classes.add(a);
+
+        java.lang.Class c = a.getClass();
+        classes.add(new Class(a, this));
         return a;
     }
+
+    public void update(Base b) {
+        name = b.getName();
+        description = b.getDescription();
+    }
+
+    public String getType(){
+        return type.toString();
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public List<Class> getClasses() {
+            return classes;
+    }
+
 
     @Override
     public int compareTo(Object o) {
@@ -40,7 +69,7 @@ public class Category extends AbstractDescribableImpl<Category> implements Compa
     @Extension
     public static class DescriptorImpl extends Descriptor<Category> {
         @Override public String getDisplayName() {
-            return "DSL Extension";
+            return "DSL Category";
         }
     }
 }

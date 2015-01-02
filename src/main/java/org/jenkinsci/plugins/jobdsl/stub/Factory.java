@@ -9,10 +9,7 @@ import hudson.model.Descriptor;
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Base;
 import org.jenkinsci.plugins.jobdsl.stub.model.Category;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by jeremymarshall on 31/12/2014.
@@ -33,12 +30,13 @@ public class Factory extends AbstractDescribableImpl<Factory> implements Describ
         }
 
         categoriesAsList = new ArrayList<Category>(categories.values());
+        Collections.sort(categoriesAsList);
     }
 
     public Base add(Base a) {
 
         if(!categories.containsKey(a.getCategory())) {
-            categories.put(a.getCategory(), new Category(a.getCategory()));
+            categories.put(a.getCategory(), new Category(a));
         }
 
         //so the individual categories are extension points too so
@@ -47,6 +45,8 @@ public class Factory extends AbstractDescribableImpl<Factory> implements Describ
 
         if( ! a.getClass().getCanonicalName().contains("org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.")) {
             categories.get(a.getCategory()).add(a);
+        } else {
+            categories.get(a.getCategory()).update(a);
         }
 
         return a;
@@ -56,10 +56,12 @@ public class Factory extends AbstractDescribableImpl<Factory> implements Describ
         return categoriesAsList;
     }
 
+    /*
     @Extension
     public static class DescriptorImpl extends Descriptor<Factory> {
         @Override public String getDisplayName() {
             return "DSL Factory";
         }
     }
+    */
 }

@@ -10,11 +10,9 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
  */
 public abstract class Base implements ExtensionPoint {
 
-    protected CategoryEnum category;
-
-    public CategoryEnum getCategory() {
-        return category;
-    }
+    public abstract CategoryEnum getCategory();
+    public abstract String getName();
+    public abstract String getDescription();
 
     //Don't use this one its just the base in case I want to add some generic functionality
     //use the descendant like Step, Axis

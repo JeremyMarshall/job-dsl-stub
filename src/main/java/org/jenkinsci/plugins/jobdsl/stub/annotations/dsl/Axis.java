@@ -12,8 +12,13 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
 @Extension
 public class Axis extends Base {
 
-    public Axis() {
-        category = CategoryEnum.AXIS;
-    }
+    public final CategoryEnum getCategory(){ return CategoryEnum.AXIS;}
+
+    @Override
+    public String getName() { return "Axis";}
+
+    @Override
+    public String getDescription() { return "Classes for Matrix Axes";}
+
 }
 

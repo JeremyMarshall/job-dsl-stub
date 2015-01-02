@@ -10,8 +10,13 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
 @Extension
 public class SCM extends Base {
 
-    public SCM() {
-        category = CategoryEnum.SCM;
-    }
+    public final CategoryEnum getCategory(){ return CategoryEnum.SCM;}
+
+    @Override
+    public String getName() { return "SCM";}
+
+    @Override
+    public String getDescription() { return "Classes for SCM stage";}
+
 }
 

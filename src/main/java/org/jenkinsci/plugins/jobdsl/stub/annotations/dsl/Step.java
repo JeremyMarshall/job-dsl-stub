@@ -11,8 +11,13 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
 
 @Extension
 public class Step extends Base {
-    public Step() {
-        category = CategoryEnum.STEP;
-    }
+    public final CategoryEnum getCategory(){ return CategoryEnum.STEP;}
+
+    @Override
+    public String getName() { return "Step";}
+
+    @Override
+    public String getDescription() { return "Classes for Build steps";}
+
 }
 

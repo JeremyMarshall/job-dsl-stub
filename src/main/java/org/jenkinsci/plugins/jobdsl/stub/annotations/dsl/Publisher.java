@@ -10,8 +10,13 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
 @Extension
 public class Publisher extends Base {
 
-    public Publisher() {
-        category = CategoryEnum.PUBLISHER;
-    }
+    public final CategoryEnum getCategory(){ return CategoryEnum.PUBLISHER;}
+
+    @Override
+    public String getName() { return "Publisher";}
+
+    @Override
+    public String getDescription() { return "Classes for Publish steps";}
+
 }
 
