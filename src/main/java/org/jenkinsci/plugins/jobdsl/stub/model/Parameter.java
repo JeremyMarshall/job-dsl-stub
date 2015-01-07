@@ -6,6 +6,11 @@ import hudson.model.AbstractDescribableImpl;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
 
+import java.lang.*;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
+
 /**
  * Created by jeremymarshall on 31/12/2014.
  */
@@ -14,25 +19,60 @@ public class Parameter extends AbstractDescribableImpl<Parameter> implements Com
 
     private Method method;
     private String type;
-    private String name;
+    private String genericType;
+    private boolean isArray;
+    //private String name;
     private java.lang.Class parameter;
+    private java.lang.reflect.Type parameterArgType;
     private String description;
+    private boolean isVaArg;
 
-    public Parameter(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Parameter p, java.lang.Class rp, Method m) {
-        name = p.name();
-        description = p.description();
+    public Parameter(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Parameter p, java.lang.Class rp, Type gpt, Method m, boolean isLast) {
+        //name = p.getName();
+        //description = p.description();
         type = rp.getName();
+        //genericType = gpt.toString();
         parameter = rp;
 
         method = m;
+
+        if(gpt instanceof ParameterizedType){
+            ParameterizedType aType = (ParameterizedType) gpt;
+            Type[] parameterArgTypes = aType.getActualTypeArguments();
+            for(Type pat : parameterArgTypes){
+                //should only be one for our purposes
+                //so no Map<String, String> type things here
+                parameterArgType = pat;
+                genericType = parameterArgType.toString();
+            }
+            description = type + "<" + genericType + "> " + p.description();
+        } else {
+            if( rp.isArray()) {
+                genericType = rp.getComponentType().getName();
+                isArray = true;
+                if(isLast) {
+                    description = genericType + "... " + p.description();
+                    this.isVaArg = true;
+                } else {
+                    description = genericType + "[] " + p.description();
+                }
+            } else {
+                description = type + " " + p.description();
+            }
+        }
     }
 
     public String getType(){
         return type;
     }
-    public String getName(){
-        return name;
+
+    public String getGenericType(){
+        return genericType;
     }
+
+    //public String getName(){
+    //    return name;
+    //}
 
     public String getDescription(){
         return description;
@@ -41,6 +81,24 @@ public class Parameter extends AbstractDescribableImpl<Parameter> implements Com
     @Override
     public int compareTo(Object o) {
         return this.toString().compareTo(o.toString());
+    }
+
+    public boolean matchParameter(List<java.lang.Class> parameterTypes, int currentParam) {
+
+        boolean ret = parameter.isAssignableFrom(parameterTypes.get(currentParam));
+
+        //look through remaining params to see if they fit if the last param a vararg and not yet matched
+        if (!ret && isVaArg && parameterTypes.size() == currentParam + 1) {
+            for (int j = currentParam; j < parameterTypes.size(); j++) {
+                ret = genericType == parameterTypes.get(j).getName();
+
+                //stop looking if we don't match
+                if (!ret) {
+                    break;
+                }
+            }
+        }
+        return ret;
     }
 
     @Extension

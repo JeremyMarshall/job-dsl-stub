@@ -7,7 +7,11 @@ import hudson.model.Describable;
 import hudson.model.Descriptor;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +28,7 @@ public class Method extends AbstractDescribableImpl<Method> implements Comparabl
 
     public Method(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method m, java.lang.reflect.Method rm, Class c) {
         aClass = c;
-        name = m.name();
+        name = rm.getName();
         description = m.description();
         method = rm;
 
@@ -32,19 +36,25 @@ public class Method extends AbstractDescribableImpl<Method> implements Comparabl
 
         Annotation[][] parameterAnnotations = method.getParameterAnnotations();
         java.lang.Class[] parameterTypes = method.getParameterTypes();
+        Type[] gpType = method.getGenericParameterTypes();
 
         int i=0;
         for(Annotation[] annotations : parameterAnnotations){
-            java.lang.Class parameterType = parameterTypes[i++];
+            java.lang.Class parameterType = parameterTypes[i];
+            Type gpt = gpType[i++];
 
             for(Annotation annotation : annotations){
                 if(annotation instanceof org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Parameter){
                     org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Parameter myAnnotation = (org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Parameter) annotation;
 
-                    parameters.add(new Parameter(myAnnotation, parameterType, this));
+                    parameters.add(new Parameter(myAnnotation, parameterType, gpt, this, i == parameterTypes.length));
                 }
             }
         }
+    }
+
+    public Class getMyClass() {
+        return aClass;
     }
 
     public String getName(){
@@ -59,6 +69,60 @@ public class Method extends AbstractDescribableImpl<Method> implements Comparabl
         return parameters;
     }
 
+    public Object execute(List<Object> params) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Object r = execute(params.toArray(new Object[params.size()]));
+
+        return r;
+    }
+
+    public Object execute( Object... params) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        Object o = aClass.getInstance(false);
+
+        Object rejiggedParams[] = new Object[parameters.size()];
+
+        if (method.isVarArgs()) {
+            //rejig varargs parms to put the vararg ones into an array (not a list)
+            for( int i = 0; i < parameters.size() - 1; i++) {
+                rejiggedParams[i] = params[i];
+            }
+
+            int j = parameters.size() - 1;
+            int k = 0;
+            String va[] = new String[1];
+
+            for( int i = parameters.size() - 1; i < params.length; i++) {
+                va[k++] = (String)params[i];
+                //k++;
+            }
+            rejiggedParams[parameters.size() - 1] = va;
+        } else {
+            rejiggedParams = params;
+        }
+
+        Object r =  method.invoke(o, rejiggedParams);
+        //Object r =  method.invoke(o, params[0], params[1]);
+
+        return r;
+    }
+
+    public boolean matchesParameters( java.lang.Class... paramTypes) {
+        return matchesParameters(Arrays.asList(paramTypes));
+    }
+
+    public boolean matchesParameters( List<java.lang.Class> parameterTypes){
+
+        int i = 0;
+
+        for( Parameter p: parameters) {
+            //this will eat all parameterTypes if its a vararg and they match - which is the last parameter
+            if (! p.matchParameter(parameterTypes, i)) {
+                //fail straight away if a parameter doesn't match
+                return false;
+            }
+            i++;
+        }
+        return parameterTypes.size() == i || method.isVarArgs();
+    }
     @Override
     public int compareTo(Object o) {
         return this.toString().compareTo(o.toString());

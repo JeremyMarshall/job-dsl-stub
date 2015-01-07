@@ -6,8 +6,7 @@ import hudson.model.AbstractDescribableImpl;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
 
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Base;
-import org.jenkinsci.plugins.jobdsl.stub.model.Category;
+import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category;
 
 import java.util.*;
 
@@ -17,31 +16,33 @@ import java.util.*;
 
 public class Factory extends AbstractDescribableImpl<Factory> implements Describable<Factory> {
 
-    private Map<CategoryEnum, Category> categories;
-    private List<Category> categoriesAsList;
+    private Map<CategoryEnum, org.jenkinsci.plugins.jobdsl.stub.model.Category> categories;
+    private List<org.jenkinsci.plugins.jobdsl.stub.model.Category> categoriesAsList;
 
     List ba;
 
     public Factory() {
-        categories = new TreeMap<CategoryEnum, Category>();
+        categories = new TreeMap<CategoryEnum, org.jenkinsci.plugins.jobdsl.stub.model.Category>();
 
-        for (Base a : Base.all()) {
+        for (Category a : Category.all()) {
             add(a);
         }
 
-        categoriesAsList = new ArrayList<Category>(categories.values());
+        categoriesAsList = new ArrayList<org.jenkinsci.plugins.jobdsl.stub.model.Category>(categories.values());
         Collections.sort(categoriesAsList);
     }
 
-    public Base add(Base a) {
+    public Category add(Category a) {
 
         if(!categories.containsKey(a.getCategory())) {
-            categories.put(a.getCategory(), new Category(a));
+            categories.put(a.getCategory(), new org.jenkinsci.plugins.jobdsl.stub.model.Category(a));
         }
 
         //so the individual categories are extension points too so
         //they will appear in the list even when no actual plugins implement them
         //keep them out of the classes though!
+
+        //should a different plugin implement a new category then we're in trouble
 
         if( ! a.getClass().getCanonicalName().contains("org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.")) {
             categories.get(a.getCategory()).add(a);
@@ -52,16 +53,25 @@ public class Factory extends AbstractDescribableImpl<Factory> implements Describ
         return a;
     }
 
-    public List<Category> getCategoriesAsList(){
+    public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( CategoryEnum e) {
+        return categories.get(e);
+    }
+
+    public List<org.jenkinsci.plugins.jobdsl.stub.model.Category> getCategoriesAsList(){
         return categoriesAsList;
     }
 
-    /*
-    @Extension
-    public static class DescriptorImpl extends Descriptor<Factory> {
-        @Override public String getDisplayName() {
+
+    public DescriptorImpl getDescriptor() {
+        return (DescriptorImpl)super.getDescriptor();
+    }
+
+
+    @Extension // This indicates to Jenkins that this is an implementation of an extension point.
+    public static final class DescriptorImpl extends Descriptor<Factory> {
+
+        public String getDisplayName() {
             return "DSL Factory";
         }
     }
-    */
 }

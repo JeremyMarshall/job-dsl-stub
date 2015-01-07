@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 
 public @interface Method {
-    public String name();
+    //public String name();
     public String description();
 }
 

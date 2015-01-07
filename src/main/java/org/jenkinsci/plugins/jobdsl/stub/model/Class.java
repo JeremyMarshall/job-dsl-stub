@@ -5,12 +5,12 @@ import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Base;
+import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by jeremymarshall on 31/12/2014.
@@ -18,14 +18,15 @@ import java.util.Map;
 
 public class Class extends AbstractDescribableImpl<Class> implements Comparable, Describable<Class> {
 
-    private Category category;
+    private org.jenkinsci.plugins.jobdsl.stub.model.Category category;
     private java.lang.Class clazz;
     private List<Method> methods;
     private String name;
     private String description;
     private String sourcePlugin;
+    private Object instance;
 
-    public Class(Base b, Category c) {
+    public Class(Category b, org.jenkinsci.plugins.jobdsl.stub.model.Category c) {
         clazz = b.getClass();
         category = c;
         name = b.getName();
@@ -44,8 +45,19 @@ public class Class extends AbstractDescribableImpl<Class> implements Comparable,
         }
     }
 
+    public Object getInstance(boolean createNew) throws InstantiationException, IllegalAccessException {
+        if(instance == null || createNew) {
+            instance = clazz.newInstance();
+        }
+        return instance;
+    }
+
     public String getName(){
         return name;
+    }
+
+    public java.lang.Class getClazz() {
+        return clazz;
     }
 
     public String getDescription(){

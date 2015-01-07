@@ -8,7 +8,7 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
  */
 
 @Extension
-public class SCM extends Base {
+public class SCM extends Category {
 
     public final CategoryEnum getCategory(){ return CategoryEnum.SCM;}
 

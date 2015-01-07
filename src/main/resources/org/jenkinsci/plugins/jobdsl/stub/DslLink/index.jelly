@@ -12,7 +12,8 @@
       <h1><img src="${resURL}/images/32x32/jobdsl.png" alt=""/>${%DSL Stubs}</h1>
       <p>${%These are the methods available to job-dsl from within your installed plugins.}</p>
       <f:form method="post" name="config" action="configSubmit">
-        <f:block>
+
+       <f:block>
           <table>
             <j:forEach  var="cat" items="${it.factory.categoriesAsList}" >
               <tr>
@@ -21,6 +22,7 @@
                 <td></td>
                 <td></td>
               </tr>
+
               <j:forEach var="c" items="${cat.classes}">
                 <tr>
                   <td></td>
@@ -39,26 +41,23 @@
 
                   <j:forEach var="p" items="${m.parameters}">
                     <tr>
+                      <!--<td></td>
                       <td></td>
-                      <td></td>
-                      <td></td>
-                      <td><f:readOnlyTextbox value="${p.type} ${p.name}"/></td>
-                      <!--<td><f:readOnlyTextbox value="${p.description}"/></td>-->
+                      <td></td>-->
+                      <td colspan="4"><f:readOnlyTextbox value="${p.description}"/></td>
                     </tr>
                   </j:forEach>
-
                 </j:forEach>
-
               </j:forEach>
             </j:forEach>
           </table>
         </f:block>
 
-        <!--
+
         <f:block>
           <f:submit value="${%Save}"/>
         </f:block>
-        -->
+
 
       </f:form>
     </l:main-panel>

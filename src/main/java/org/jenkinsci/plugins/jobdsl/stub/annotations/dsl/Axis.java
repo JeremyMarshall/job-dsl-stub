@@ -1,7 +1,5 @@
 package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl;
 
-import hudson.ExtensionList;
-import jenkins.model.Jenkins;
 import hudson.Extension;
 import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
 
@@ -10,7 +8,7 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
  */
 
 @Extension
-public class Axis extends Base {
+public class Axis extends Category {
 
     public final CategoryEnum getCategory(){ return CategoryEnum.AXIS;}
 

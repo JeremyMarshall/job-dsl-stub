@@ -8,7 +8,7 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
  */
 
 @Extension
-public class Publisher extends Base {
+public class Publisher extends Category {
 
     public final CategoryEnum getCategory(){ return CategoryEnum.PUBLISHER;}
 

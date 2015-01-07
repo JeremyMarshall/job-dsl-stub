@@ -8,17 +8,17 @@ import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
 /**
  * Created by jeremymarshall on 30/12/2014.
  */
-public abstract class Base implements ExtensionPoint {
+public abstract class Category implements ExtensionPoint {
 
     public abstract CategoryEnum getCategory();
     public abstract String getName();
     public abstract String getDescription();
 
-    //Don't use this one its just the base in case I want to add some generic functionality
-    //use the descendant like Step, Axis
+    //Use this if you have a new category (like step, etc)
+    //use the descendant like Step, Axis for any concrete plugins
 
-    public static ExtensionList<Base> all() {
-        return Jenkins.getInstance().getExtensionList(Base.class);
+    public static ExtensionList<Category> all() {
+        return Jenkins.getInstance().getExtensionList(Category.class);
     }
 }
 
