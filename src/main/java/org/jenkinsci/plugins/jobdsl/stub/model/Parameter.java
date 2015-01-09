@@ -7,6 +7,7 @@ import hudson.model.Describable;
 import hudson.model.Descriptor;
 
 import java.lang.*;
+import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Parameter extends AbstractDescribableImpl<Parameter> implements Com
     private Method method;
     private String type;
     private String genericType;
+    private java.lang.Class genericClass;
     private boolean isArray;
     //private String name;
     private java.lang.Class parameter;
@@ -43,16 +45,19 @@ public class Parameter extends AbstractDescribableImpl<Parameter> implements Com
                 //should only be one for our purposes
                 //so no Map<String, String> type things here
                 parameterArgType = pat;
+                genericClass = pat.getClass();
                 genericType = parameterArgType.toString();
             }
             description = type + "<" + genericType + "> " + p.description();
         } else {
+            genericClass = rp.getComponentType();
+
             if( rp.isArray()) {
                 genericType = rp.getComponentType().getName();
                 isArray = true;
                 if(isLast) {
                     description = genericType + "... " + p.description();
-                    this.isVaArg = true;
+                    isVaArg = true;
                 } else {
                     description = genericType + "[] " + p.description();
                 }
@@ -83,12 +88,25 @@ public class Parameter extends AbstractDescribableImpl<Parameter> implements Com
         return this.toString().compareTo(o.toString());
     }
 
+    public Object getInstance(int size) {//throws InstantiationException, IllegalAccessException {
+        return Array.newInstance(genericClass, size);
+    }
+
     public boolean matchParameter(List<java.lang.Class> parameterTypes, int currentParam) {
 
-        boolean ret = parameter.isAssignableFrom(parameterTypes.get(currentParam));
+        boolean ret = false;
+
+        //we may not have been passed enough parameters..
+        if(currentParam < parameterTypes.size()) {
+            ret = parameter.isAssignableFrom(parameterTypes.get(currentParam));
+        } else {
+            if (isVaArg) {
+                ret = true;
+            }
+        }
 
         //look through remaining params to see if they fit if the last param a vararg and not yet matched
-        if (!ret && isVaArg && parameterTypes.size() == currentParam + 1) {
+        if (!ret && isVaArg) {
             for (int j = currentParam; j < parameterTypes.size(); j++) {
                 ret = genericType == parameterTypes.get(j).getName();
 

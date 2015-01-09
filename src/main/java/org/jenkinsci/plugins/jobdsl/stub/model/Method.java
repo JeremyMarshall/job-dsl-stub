@@ -7,6 +7,7 @@ import hudson.model.Describable;
 import hudson.model.Descriptor;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -88,11 +89,15 @@ public class Method extends AbstractDescribableImpl<Method> implements Comparabl
 
             int j = parameters.size() - 1;
             int k = 0;
-            String va[] = new String[1];
+
+            //the vaarg is the size of the actual parameters - the number of required parameters + 1
+            //the +1 is the last required param is the vaarg
+
+            //what about if the vaarg is not sent at all?
+            Object va = parameters.get(parameters.size() - 1).getInstance(params.length - parameters.size() + 1);
 
             for( int i = parameters.size() - 1; i < params.length; i++) {
-                va[k++] = (String)params[i];
-                //k++;
+                Array.set(va, k++, (String)params[i]);
             }
             rejiggedParams[parameters.size() - 1] = va;
         } else {
