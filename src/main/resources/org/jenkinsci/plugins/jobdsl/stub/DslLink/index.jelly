@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Index page
+-->
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout"
+         xmlns:f="/lib/form" xmlns:c="/lib/credentials">
+  <l:layout title="${%DSL Stubs}" norefresh="true">
+    <st:include page="sidepanel.jelly" it="${app}"/>
+    <l:main-panel>
+      <h1><img src="${resURL}/images/32x32/jobdsl.png" alt=""/>${%DSL Stubs}</h1>
+      <p>${%These are the methods available to job-dsl from within your installed plugins.}</p>
+      <f:form method="post" name="config" action="configSubmit">
+
+       <f:block>
+          <table>
+            <j:forEach  var="cat" items="${it.factory.categoriesAsList}" >
+              <tr>
+                <td><f:readOnlyTextbox value="${cat.name}"/></td>
+                <td><f:readOnlyTextbox value="${cat.description}"/></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <j:forEach var="c" items="${cat.classes}">
+                <tr>
+                  <td></td>
+                  <td><f:readOnlyTextbox value="${c.name}"/></td>
+                  <td><f:readOnlyTextbox value="${c.description}"/></td>
+                  <td></td>
+                </tr>
+
+                <j:forEach var="m" items="${c.methods}">
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td><f:readOnlyTextbox value="${m.name}"/></td>
+                    <td><f:readOnlyTextbox value="${m.description}"/></td>
+                  </tr>
+
+                  <j:forEach var="p" items="${m.parameters}">
+                    <tr>
+                      <!--<td></td>
+                      <td></td>
+                      <td></td>-->
+                      <td colspan="4"><f:readOnlyTextbox value="${p.description}"/></td>
+                    </tr>
+                  </j:forEach>
+                </j:forEach>
+              </j:forEach>
+            </j:forEach>
+          </table>
+        </f:block>
+
+
+        <f:block>
+          <f:submit value="${%Save}"/>
+        </f:block>
+
+
+      </f:form>
+    </l:main-panel>
+  </l:layout>
+</j:jelly>
