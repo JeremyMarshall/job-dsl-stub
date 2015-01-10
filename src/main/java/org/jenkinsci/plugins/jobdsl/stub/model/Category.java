@@ -5,7 +5,6 @@ import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
-import org.jenkinsci.plugins.jobdsl.stub.CategoryEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,14 +17,12 @@ import java.util.Map;
 
 public class Category extends AbstractDescribableImpl<Category> implements Comparable, Describable<Category> {
 
-    private CategoryEnum type;
     private List<Class> classes;
     private Map<String, List<Method>> methods;
     private String name;
     private String description;
 
     public Category(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category b) {
-        type = b.getCategory();
         name = b.getName();
         description = b.getDescription();
 
@@ -51,10 +48,6 @@ public class Category extends AbstractDescribableImpl<Category> implements Compa
     public void update(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category b) {
         name = b.getName();
         description = b.getDescription();
-    }
-
-    public String getType(){
-        return type.toString();
     }
 
     public String getName(){

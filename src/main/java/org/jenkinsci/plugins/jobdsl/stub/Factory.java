@@ -16,13 +16,13 @@ import java.util.*;
 
 public class Factory extends AbstractDescribableImpl<Factory> implements Describable<Factory> {
 
-    private Map<CategoryEnum, org.jenkinsci.plugins.jobdsl.stub.model.Category> categories;
+    private Map<String, org.jenkinsci.plugins.jobdsl.stub.model.Category> categories;
     private List<org.jenkinsci.plugins.jobdsl.stub.model.Category> categoriesAsList;
 
     List ba;
 
     public Factory() {
-        categories = new TreeMap<CategoryEnum, org.jenkinsci.plugins.jobdsl.stub.model.Category>();
+        categories = new TreeMap<String, org.jenkinsci.plugins.jobdsl.stub.model.Category>();
 
         for (Category a : Category.all()) {
             add(a);
@@ -42,9 +42,9 @@ public class Factory extends AbstractDescribableImpl<Factory> implements Describ
         //they will appear in the list even when no actual plugins implement them
         //keep them out of the classes though!
 
-        //should a different plugin implement a new category then we're in trouble
-
-        if( ! a.getClass().getCanonicalName().contains("org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.")) {
+        //if there are no methods it must be a category (step, scm, etc)
+        //don't forget to get your concrete classes to set this to true
+        if( a.hasMethods()) {
             categories.get(a.getCategory()).add(a);
         } else {
             categories.get(a.getCategory()).update(a);
@@ -53,8 +53,8 @@ public class Factory extends AbstractDescribableImpl<Factory> implements Describ
         return a;
     }
 
-    public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( CategoryEnum e) {
-        return categories.get(e);
+    public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( Class c) {
+        return categories.get(c.getName());
     }
 
     public List<org.jenkinsci.plugins.jobdsl.stub.model.Category> getCategoriesAsList(){
