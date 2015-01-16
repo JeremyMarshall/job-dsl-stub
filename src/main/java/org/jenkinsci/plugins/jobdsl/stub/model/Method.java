@@ -1,15 +1,8 @@
 package org.jenkinsci.plugins.jobdsl.stub.model;
 
-
-import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
-import hudson.model.Describable;
-import hudson.model.Descriptor;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +12,7 @@ import java.util.List;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Method extends AbstractDescribableImpl<Method> implements Comparable, Describable<Method> {
+public class Method implements Comparable {
 
     private Class aClass;
     private String name;
@@ -133,10 +126,4 @@ public class Method extends AbstractDescribableImpl<Method> implements Comparabl
         return this.toString().compareTo(o.toString());
     }
 
-    @Extension
-    public static class DescriptorImpl extends Descriptor<Method> {
-        @Override public String getDisplayName() {
-            return "DSL Method";
-        }
-    }
 }

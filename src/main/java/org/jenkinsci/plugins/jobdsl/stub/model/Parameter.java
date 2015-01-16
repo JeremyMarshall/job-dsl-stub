@@ -1,12 +1,5 @@
 package org.jenkinsci.plugins.jobdsl.stub.model;
 
-
-import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
-import hudson.model.Describable;
-import hudson.model.Descriptor;
-
-import java.lang.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -16,7 +9,7 @@ import java.util.List;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Parameter extends AbstractDescribableImpl<Parameter> implements Comparable, Describable<Parameter> {
+public class Parameter  implements Comparable {
 
     private Method method;
     private String type;
@@ -117,12 +110,5 @@ public class Parameter extends AbstractDescribableImpl<Parameter> implements Com
             }
         }
         return ret;
-    }
-
-    @Extension
-    public static class DescriptorImpl extends Descriptor<Parameter> {
-        @Override public String getDisplayName() {
-            return "DSL Parameter";
-        }
     }
 }

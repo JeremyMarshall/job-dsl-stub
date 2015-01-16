@@ -1,11 +1,5 @@
 package org.jenkinsci.plugins.jobdsl.stub;
 
-
-import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
-import hudson.model.Describable;
-import hudson.model.Descriptor;
-
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category;
 
 import java.util.*;
@@ -14,7 +8,7 @@ import java.util.*;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Factory extends AbstractDescribableImpl<Factory> implements Describable<Factory> {
+public class Factory  {
 
     private Map<String, org.jenkinsci.plugins.jobdsl.stub.model.Category> categories;
     private List<org.jenkinsci.plugins.jobdsl.stub.model.Category> categoriesAsList;
@@ -61,17 +55,4 @@ public class Factory extends AbstractDescribableImpl<Factory> implements Describ
         return categoriesAsList;
     }
 
-
-    public DescriptorImpl getDescriptor() {
-        return (DescriptorImpl)super.getDescriptor();
-    }
-
-
-    @Extension // This indicates to Jenkins that this is an implementation of an extension point.
-    public static final class DescriptorImpl extends Descriptor<Factory> {
-
-        public String getDisplayName() {
-            return "DSL Factory";
-        }
-    }
 }

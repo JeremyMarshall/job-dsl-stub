@@ -2,20 +2,15 @@ package org.jenkinsci.plugins.jobdsl.stub.model;
 
 
 import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
-import hudson.model.Describable;
 import hudson.model.Descriptor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Category extends AbstractDescribableImpl<Category> implements Comparable, Describable<Category> {
+public class Category implements Comparable{
 
     private List<Class> classes;
     private Map<String, List<Method>> methods;
@@ -63,7 +58,11 @@ public class Category extends AbstractDescribableImpl<Category> implements Compa
     }
 
     public List<Method> getMethods( String name) {
-        return methods.get(name);
+        if (methods.containsKey(name)) {
+            return methods.get(name);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Method getMethod( String name, List<Object> params) {
@@ -90,10 +89,4 @@ public class Category extends AbstractDescribableImpl<Category> implements Compa
         return this.toString().compareTo(o.toString());
     }
 
-    @Extension
-    public static class DescriptorImpl extends Descriptor<Category> {
-        @Override public String getDisplayName() {
-            return "DSL Category";
-        }
-    }
 }

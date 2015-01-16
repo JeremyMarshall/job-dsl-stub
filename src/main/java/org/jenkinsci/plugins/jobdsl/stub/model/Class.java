@@ -2,13 +2,10 @@ package org.jenkinsci.plugins.jobdsl.stub.model;
 
 
 import hudson.Extension;
-import hudson.model.AbstractDescribableImpl;
-import hudson.model.Describable;
 import hudson.model.Descriptor;
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +13,7 @@ import java.util.List;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Class extends AbstractDescribableImpl<Class> implements Comparable, Describable<Class> {
+public class Class implements Comparable{
 
     private org.jenkinsci.plugins.jobdsl.stub.model.Category category;
     private java.lang.Class clazz;
@@ -71,10 +68,4 @@ public class Class extends AbstractDescribableImpl<Class> implements Comparable,
         return this.toString().compareTo(o.toString());
     }
 
-    @Extension
-    public static class DescriptorImpl extends Descriptor<Class> {
-        @Override public String getDisplayName() {
-            return "DSL Class";
-        }
-    }
 }
