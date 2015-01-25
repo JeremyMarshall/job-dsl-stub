@@ -1,6 +1,7 @@
 package org.jenkinsci.plugins.jobdsl.stub.model;
 
 
+import groovy.lang.Closure;
 import hudson.Extension;
 import hudson.model.Descriptor;
 
@@ -58,6 +59,7 @@ public class Category implements Comparable{
     }
 
     public List<Method> getMethods( String name) {
+        //if (methods.containsKey(name))
         if (methods.containsKey(name)) {
             return methods.get(name);
         } else {
@@ -73,7 +75,12 @@ public class Category implements Comparable{
 
         List<java.lang.Class> paramTypes = new ArrayList<java.lang.Class>();
         for(Object o: params) {
-            paramTypes.add(o.getClass());
+
+            if (o instanceof Closure){
+                paramTypes.add(Closure.class);
+            } else {
+                paramTypes.add(o.getClass());
+            }
         }
 
         for (Method m: getMethods(name)){

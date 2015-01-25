@@ -14,6 +14,11 @@ public abstract class Category implements ExtensionPoint {
 
     public abstract String getCategory();
 
+    //where to direct closures to
+    public Closure getClosureCategory() {
+        return null;
+    }
+
     //override this in classes which present methods
     public boolean hasMethods(){
         return false;
@@ -25,5 +30,6 @@ public abstract class Category implements ExtensionPoint {
     public static ExtensionList<Category> all() {
         return Jenkins.getInstance().getExtensionList(Category.class);
     }
+
 }
 

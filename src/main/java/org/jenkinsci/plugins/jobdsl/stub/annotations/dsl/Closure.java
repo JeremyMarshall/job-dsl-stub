@@ -7,17 +7,16 @@ import hudson.Extension;
  */
 
 @Extension
-public class Axis extends Category {
+public class Closure extends Category {
+    @Override
+    public String getName() { return "Closure";}
 
     @Override
-    public String getName() { return "Axis";}
-
-    @Override
-    public String getDescription() { return "Classes for Matrix Axes";}
+    public String getDescription() { return "Classes for Closures";}
 
     @Override
     public final String getCategory(){
-        return Axis.class.getName();
+        return Closure.class.getName();
     }
 
 }
