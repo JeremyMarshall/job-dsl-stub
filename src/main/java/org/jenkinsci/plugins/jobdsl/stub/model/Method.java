@@ -16,14 +16,20 @@ public class Method implements Comparable {
 
     private Class aClass;
     private String name;
-    private String description;
+    protected String description;
     private java.lang.reflect.Method method;
     private List<Parameter> parameters;
 
     public Method(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method m, java.lang.reflect.Method rm, Class c) {
+
+        this( rm, c);
+        description = m.description();
+    }
+
+
+    public Method(java.lang.reflect.Method rm, Class c) {
         aClass = c;
         name = rm.getName();
-        description = m.description();
         method = rm;
 
         parameters = new ArrayList<Parameter>();

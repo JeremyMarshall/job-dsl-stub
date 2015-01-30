@@ -18,6 +18,7 @@ public class Class implements Comparable{
     private org.jenkinsci.plugins.jobdsl.stub.model.Category category;
     private java.lang.Class clazz;
     private List<Method> methods;
+    private List<ClosureMethod> closureMethods;
     private String name;
     private String description;
     private String sourcePlugin;
@@ -30,6 +31,7 @@ public class Class implements Comparable{
         description = b.getDescription();
 
         methods = new ArrayList<Method>();
+        closureMethods = new ArrayList<ClosureMethod>();
 
         for (java.lang.reflect.Method m : clazz.getMethods()) {
             Annotation annotation = m.getAnnotation(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method.class);
@@ -38,6 +40,15 @@ public class Class implements Comparable{
                 org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method myAnnotation = (org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method) annotation;
 
                 methods.add(new Method(myAnnotation, m, this));
+            }
+        }
+        for (java.lang.reflect.Method m : clazz.getMethods()) {
+            Annotation annotation = m.getAnnotation(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.ClosureMethod.class);
+
+            if(annotation instanceof org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.ClosureMethod){
+                org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.ClosureMethod myAnnotation = (org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.ClosureMethod) annotation;
+
+                closureMethods.add(new ClosureMethod(myAnnotation, m, this));
             }
         }
     }
@@ -62,6 +73,8 @@ public class Class implements Comparable{
     }
 
     public List<Method> getMethods() { return methods; }
+
+    public List<ClosureMethod> getClosureMethods() { return closureMethods; }
 
     @Override
     public int compareTo(Object o) {
