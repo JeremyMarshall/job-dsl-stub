@@ -4,6 +4,7 @@ import hudson.ExtensionList;
 import hudson.ExtensionPoint;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.jobdsl.stub.DslClosureUnsupported;
+import org.jenkinsci.plugins.jobdsl.stub.DslNoClosureClass;
 
 /**
  * Created by jeremymarshall on 30/12/2014.
@@ -14,11 +15,6 @@ public abstract class Category implements ExtensionPoint {
     public abstract String getDescription();
 
     public abstract String getCategory();
-
-    //where to direct closure call methods to
-    public Object getClosureDelegate() {
-        return null;
-    }
 
     //override this in classes which present methods
     public boolean hasMethods(){
@@ -32,16 +28,18 @@ public abstract class Category implements ExtensionPoint {
         return Jenkins.getInstance().getExtensionList(Category.class);
     }
 
-    protected final Object runClosure(Object closure)
-            throws DslClosureUnsupported, IllegalAccessException, InstantiationException{
+    protected final Object runClosure(Object closure, java.lang.Class closureClass)
+            throws DslClosureUnsupported, DslNoClosureClass, IllegalAccessException, InstantiationException{
 
-        Object closureDelegate = getClosureDelegate();
+        if (closureClass == null) {
+            throw new DslNoClosureClass();
+        }
+
+        Object closureDelegate = closureClass.newInstance();
 
         if (closureDelegate == null) {
             throw new DslClosureUnsupported();
         }
-
-        //groovy.lang.Closure c = (groovy.lang.Closure) closure;
 
         closure.setDelegate(closureDelegate);
         closure.setResolveStrategy(groovy.lang.Closure.DELEGATE_FIRST);

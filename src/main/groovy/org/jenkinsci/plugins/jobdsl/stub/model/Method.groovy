@@ -17,6 +17,7 @@ public class Method implements Comparable {
     private Class aClass;
     private String name;
     private String description;
+    private java.lang.Class closureClass;
     private java.lang.reflect.Method method;
     private List<Parameter> parameters;
 
@@ -24,6 +25,7 @@ public class Method implements Comparable {
         aClass = c;
         name = rm.getName();
         description = m.description();
+        closureClass = m.closureClass();
         method = rm;
 
         parameters = new ArrayList<Parameter>();

@@ -13,8 +13,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 
 public @interface Method {
-    //public String name();
     public String description();
+    public Class closureClass() default Object.class;
 }
 
 
