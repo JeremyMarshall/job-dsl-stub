@@ -10,7 +10,7 @@ import hudson.Extension;
 public class Publisher extends Category {
 
     @Override
-    public String getName() { return "Publisher";}
+    public String getName() { return "publishers";}
 
     @Override
     public String getDescription() { return "Classes for Publish steps";}

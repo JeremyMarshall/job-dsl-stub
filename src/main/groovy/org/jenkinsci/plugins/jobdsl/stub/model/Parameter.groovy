@@ -25,7 +25,7 @@ public class Parameter  implements Comparable {
     public Parameter(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Parameter p, java.lang.Class rp, Type gpt, Method m, boolean isLast) {
         //name = p.getName();
         //description = p.description();
-        type = rp.getName();
+        type = convertType( rp )
         //genericType = gpt.toString();
         parameter = rp;
 
@@ -39,17 +39,17 @@ public class Parameter  implements Comparable {
                 //so no Map<String, String> type things here
                 parameterArgType = pat;
                 genericClass = pat.getClass();
-                genericType = parameterArgType.toString();
+                genericType = convertType( parameterArgType )
             }
             description = type + "<" + genericType + "> " + p.description();
         } else {
             genericClass = rp.getComponentType();
 
             if( rp.isArray()) {
-                genericType = rp.getComponentType().getName();
+                genericType = convertType( rp.getComponentType() )
                 isArray = true;
                 if(isLast) {
-                    description = genericType + "... " + p.description();
+                    description = convertType( genericType ) + "... " + p.description();
                     isVaArg = true;
                 } else {
                     description = genericType + "[] " + p.description();
@@ -58,6 +58,14 @@ public class Parameter  implements Comparable {
                 description = type + " " + p.description();
             }
         }
+    }
+
+    static private String convertType(Object t) {
+        t.toString().tokenize('.').last()
+    }
+
+    static private String convertType(Class t) {
+        t.toString().tokenize('.').last()
     }
 
     public String getType(){

@@ -9,7 +9,7 @@ import hudson.Extension;
 @Extension
 public class Closure extends Category {
     @Override
-    public String getName() { return "Closure";}
+    public String getName() { return "closure";}
 
     @Override
     public String getDescription() { return "Classes for Closures";}

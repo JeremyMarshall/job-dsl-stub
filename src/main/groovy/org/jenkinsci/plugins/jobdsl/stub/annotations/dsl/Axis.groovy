@@ -10,7 +10,7 @@ import hudson.Extension;
 public class Axis extends Category {
 
     @Override
-    public String getName() { return "Axis";}
+    public String getName() { return "axes";}
 
     @Override
     public String getDescription() { return "Classes for Matrix Axes";}

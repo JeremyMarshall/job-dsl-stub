@@ -9,7 +9,7 @@ import hudson.Extension;
 @Extension
 public class Step extends Category {
     @Override
-    public String getName() { return "Step";}
+    public String getName() { return "steps";}
 
     @Override
     public String getDescription() { return "Classes for Build steps";}

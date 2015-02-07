@@ -13,7 +13,7 @@ public class Factory  {
     private Map<String, org.jenkinsci.plugins.jobdsl.stub.model.Category> categories;
     private List<org.jenkinsci.plugins.jobdsl.stub.model.Category> categoriesAsList;
 
-    List ba;
+    //List ba;
 
     public Factory() {
         categories = new TreeMap<String, org.jenkinsci.plugins.jobdsl.stub.model.Category>();

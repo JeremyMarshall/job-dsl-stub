@@ -21,9 +21,6 @@ public abstract class Category implements ExtensionPoint {
         return false;
     };
 
-    //Use this if you have a new category (like step, etc)
-    //use the descendant like Step, Axis for any concrete plugins
-
     public static ExtensionList<Category> all() {
         return Jenkins.getInstance().getExtensionList(Category.class);
     }

@@ -1,4 +1,6 @@
-package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl;
+package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl
+
+import org.jenkinsci.plugins.jobdsl.stub.NoClosure;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +16,7 @@ import java.lang.annotation.Target;
 
 public @interface Method {
     public String description();
-    public Class closureClass() default Object.class;
+    public Class closureClass() default NoClosure;
 }
 
 

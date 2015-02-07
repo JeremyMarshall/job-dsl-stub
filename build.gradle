@@ -1,0 +1,64 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.5.0'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.0.0'
+    }
+}
+apply plugin: 'jpi'
+apply plugin: 'idea'
+apply plugin: 'cobertura'
+apply plugin: 'codenarc'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+codenarc {
+    toolVersion = '0.21'
+    configFile = file('config/codenarc/rules.groovy')
+}
+
+codenarcTest {
+    configFile = file('config/codenarc/rules-test.groovy')
+}
+
+cobertura{
+    //coverageFormats = ['html', 'xml']
+    coverageSourceDirs = [project.sourceSets.main.java.srcDirs,
+                          project.sourceSets.main.groovy.srcDirs]
+    coverageIgnoreTrivial = true
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.spockframework:spock-core:0.6-groovy-1.8'
+    jenkinsTest 'org.jenkins-ci.plugins:ant:1.1@jar',
+            'org.jenkins-ci.plugins:javadoc:1.0@jar'
+}
+
+group = 'org.jenkins-ci.plugins'
+version = '0.0.1-SNAPSHOT'
+description = 'Stub classes to progrematically create jobs'
+
+jenkinsPlugin {
+    coreVersion = '1.595'
+    displayName = 'DSL stub plugin'
+    url = 'https://wiki.jenkins-ci.org/display/JENKINS/Job+DSL+Stub+Plugin'
+    gitHubUrl = 'https://github.com/jenkinsci/job-dsl-stub-plugin'
+    developers {
+        developer {
+            id 'jeremym'
+            name 'Jeremy Marshall'
+            email 'jeremystuartmarshall@gmail.com'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.8'
+}
