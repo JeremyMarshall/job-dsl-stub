@@ -7,17 +7,22 @@ import hudson.Extension;
  */
 
 @Extension
-public class SCM extends Category {
+public class Scm extends Category {
 
     @Override
-    public String getName() { return "SCM";}
+    public String getName() { return "scm";}
 
     @Override
     public String getDescription() { return "Classes for SCM stage";}
 
     @Override
     public final String getCategory(){
-        return SCM.class.getName();
+        return Scm.class.getName();
+    }
+
+    @Override
+    public int ordinal() {
+        10
     }
 }
 

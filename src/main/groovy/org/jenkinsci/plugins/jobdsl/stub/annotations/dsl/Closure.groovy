@@ -19,5 +19,9 @@ public class Closure extends Category {
         return Closure.class.getName();
     }
 
+    @Override
+    public int ordinal() {
+        0
+    }
 }
 

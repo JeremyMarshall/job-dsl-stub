@@ -12,7 +12,7 @@ import java.util.List;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Method implements Comparable {
+public class Method implements Comparable<Method> {
 
     private Class aClass;
     private String name;
@@ -124,8 +124,17 @@ public class Method implements Comparable {
         return parameterTypes.size() == i || method.isVarArgs();
     }
     @Override
-    public int compareTo(Object o) {
-        return this.toString().compareTo(o.toString());
+    public int compareTo(Method m) {
+        int ret = this.name.compareTo(m.name)
+
+        if (ret == 0){
+            ret = parameters.size() < m.parameters.size()
+
+            if (ret == 0) {
+                ret = this.toString().compareTo(m.toString())
+            }
+        }
+        ret
     }
 
 }

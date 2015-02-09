@@ -18,5 +18,10 @@ public class Step extends Category {
     public final String getCategory(){
         return Step.class.getName();
     }
+
+    @Override
+    public int ordinal() {
+        100
+    }
 }
 

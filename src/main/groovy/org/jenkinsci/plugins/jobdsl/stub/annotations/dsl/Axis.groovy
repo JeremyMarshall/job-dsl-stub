@@ -20,5 +20,9 @@ public class Axis extends Category {
         return Axis.class.getName();
     }
 
+    @Override
+    public int ordinal() {
+        50
+    }
 }
 

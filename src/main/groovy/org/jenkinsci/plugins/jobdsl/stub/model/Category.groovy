@@ -11,16 +11,18 @@ import java.util.*;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Category implements Comparable{
+public class Category implements Comparable<Category>{
 
     private List<Class> classes;
     private Map<String, List<Method>> methods;
     private String name;
     private String description;
+    private ordinal
 
     public Category(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category b) {
         name = b.getName();
         description = b.getDescription();
+        ordinal = b.ordinal()
 
         classes = new ArrayList<Class>();
         methods = new HashMap<String, List<Method>>();
@@ -92,8 +94,8 @@ public class Category implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        return this.toString().compareTo(o.toString());
+    public int compareTo(Category c) {
+        ordinal < c.ordinal;
     }
 
 }

@@ -33,7 +33,7 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
             builder << "//${cat.description}"
             builder << "${cat.name} {"
 
-            cat.classes.each { c ->
+            cat.classes.sort().each { c ->
                 builder << "\t// ${Jenkins.instance.pluginManager.whichPlugin(c.clazz).toString()}"
                 builder += classDisplay(c, 0)
             }
@@ -53,7 +53,7 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         builder << "$indentStr// ${c.clazz}"
         builder << ''
 
-        c.methods.each { m ->
+        c.methods.sort().each { m ->
             builder << "$indentStr// ${m.description}"
 
             if(m.closureClass == NoClosure ) {

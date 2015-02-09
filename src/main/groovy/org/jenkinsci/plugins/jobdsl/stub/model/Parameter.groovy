@@ -9,7 +9,7 @@ import java.util.List;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Parameter  implements Comparable {
+public class Parameter {
 
     private Method method;
     private String type;
@@ -84,10 +84,10 @@ public class Parameter  implements Comparable {
         return description;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return this.toString().compareTo(o.toString());
-    }
+    //@Override
+    //public int compareTo(Object o) {
+    //    return this.toString().compareTo(o.toString());
+    //}
 
     public Object getInstance(int size) {//throws InstantiationException, IllegalAccessException {
         return Array.newInstance(genericClass, size);

@@ -13,7 +13,7 @@ import java.util.List;
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Class implements Comparable{
+public class Class implements Comparable<Class>{
 
     private org.jenkinsci.plugins.jobdsl.stub.model.Category category;
     private java.lang.Class clazz;
@@ -64,8 +64,8 @@ public class Class implements Comparable{
     public List<Method> getMethods() { return methods; }
 
     @Override
-    public int compareTo(Object o) {
-        return this.toString().compareTo(o.toString());
+    public int compareTo(Class c) {
+        return c.name.compareTo(c.name);
     }
 
 }

@@ -13,8 +13,8 @@ public abstract class Category implements ExtensionPoint {
 
     public abstract String getName();
     public abstract String getDescription();
-
     public abstract String getCategory();
+    public abstract int ordinal();
 
     //override this in classes which present methods
     public boolean hasMethods(){
@@ -43,6 +43,5 @@ public abstract class Category implements ExtensionPoint {
         closure();
         return closureDelegate;
     }
-
 }
 

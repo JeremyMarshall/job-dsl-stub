@@ -20,5 +20,9 @@ public class Publisher extends Category {
         return Publisher.class.getName();
     }
 
+    @Override
+    public int ordinal() {
+        150
+    }
 }
 

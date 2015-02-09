@@ -23,7 +23,7 @@ public class Factory  {
         }
 
         categoriesAsList = new ArrayList<org.jenkinsci.plugins.jobdsl.stub.model.Category>(categories.values());
-        Collections.sort(categoriesAsList);
+        Arrays.sort(categoriesAsList)
     }
 
     public Category add(Category a) {
@@ -52,7 +52,7 @@ public class Factory  {
     }
 
     public List<org.jenkinsci.plugins.jobdsl.stub.model.Category> getCategoriesAsList(){
-        return categoriesAsList;
+        return categoriesAsList.sort(true)
     }
 
 }
