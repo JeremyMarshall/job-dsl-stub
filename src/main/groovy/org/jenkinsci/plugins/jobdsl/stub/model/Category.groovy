@@ -1,6 +1,6 @@
-package org.jenkinsci.plugins.jobdsl.stub.model;
+package org.jenkinsci.plugins.jobdsl.stub.model
 
-
+import com.thoughtworks.xstream.XStream;
 import groovy.lang.Closure;
 import hudson.Extension;
 import hudson.model.Descriptor;
@@ -54,6 +54,10 @@ public class Category implements Comparable<Category>{
 
     public String getDescription(){
         return description;
+    }
+
+    public org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category getClazz() {
+        return clazz
     }
 
     public List<Class> getClasses() {

@@ -1,7 +1,9 @@
-package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl;
+package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl
 
+import com.thoughtworks.xstream.XStream;
 import hudson.ExtensionList;
-import hudson.ExtensionPoint;
+import hudson.ExtensionPoint
+import hudson.util.XStream2;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.jobdsl.stub.DslClosureUnsupported;
 import org.jenkinsci.plugins.jobdsl.stub.DslNoClosureClass;
@@ -23,6 +25,11 @@ public abstract class Category implements ExtensionPoint {
 
     public static ExtensionList<Category> all() {
         return Jenkins.getInstance().getExtensionList(Category.class);
+    }
+
+    public boolean xstreamAlias(XStream2 xstream) {
+        //items are fine the way they come out - scm items are not
+        return false
     }
 
     protected final Object runClosure(Object closure, java.lang.Class closureClass)

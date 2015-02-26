@@ -1,5 +1,6 @@
-package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl;
+package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl
 
+import com.thoughtworks.xstream.XStream;
 import hudson.Extension;
 
 /**
@@ -24,5 +25,6 @@ public class Scm extends Category {
     public int ordinal() {
         10
     }
+
 }
 

@@ -102,11 +102,5 @@
 </plugins>
   </build>
   <dependencies>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy-all</artifactId>
-      <!-- any version of Groovy \>= 1.8.2 should work here -->
-      <version>1.8.9</version>
-    </dependency>
   </dependencies>
 </project>

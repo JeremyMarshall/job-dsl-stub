@@ -21,7 +21,7 @@ public class Class implements Comparable<Class>{
     private String name;
     private String description;
     private String sourcePlugin;
-    private Object instance;
+    private Category instance;
 
     public Class(Category b, org.jenkinsci.plugins.jobdsl.stub.model.Category c) {
         clazz = b.getClass();
@@ -44,9 +44,9 @@ public class Class implements Comparable<Class>{
 
     public Object getInstance(boolean createNew) throws InstantiationException, IllegalAccessException {
         if(instance == null || createNew) {
-            instance = clazz.newInstance();
+            this.instance =  clazz.newInstance();
         }
-        return instance;
+        return this.instance;
     }
 
     public String getName(){
