@@ -1,13 +1,19 @@
 buildscript {
     repositories {
-        jcenter()
+        // The plugin is currently only available via the Jenkins
+        // Maven repository, but has dependencies in Maven Central.
+        mavenCentral()
+        maven {
+            url 'http://repo.jenkins-ci.org/releases/'
+        }
     }
     dependencies {
-        classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.5.0'
-        classpath 'net.saliman:gradle-cobertura-plugin:2.0.0'
+        classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.10.0'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.5'
     }
 }
-apply plugin: 'jpi'
+
+apply plugin: 'org.jenkins-ci.jpi'
 apply plugin: 'idea'
 apply plugin: 'cobertura'
 apply plugin: 'codenarc'
@@ -60,5 +66,5 @@ jenkinsPlugin {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.8'
+    gradleVersion = '2.3'
 }

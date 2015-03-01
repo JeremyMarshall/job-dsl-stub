@@ -3,4 +3,6 @@ job-dsl-stub-plugin.iml
 target
 .DS_Store
 work
+.gradle/
+build/
 
