@@ -1,10 +1,5 @@
 package org.jenkinsci.plugins.jobdsl.stub
 
-//import hudson.Extension
-//import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category
-//import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Closure
-//import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method
-//import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Parameter
 import org.junit.Rule
 import org.jvnet.hudson.test.JenkinsRule
 import spock.lang.Specification
@@ -40,7 +35,7 @@ class FactorySpec extends Specification {
         then:
 
         assert ret instanceof String
-        ret.trim().matches('a b c')
+        ret.trim().matches(/a b c/)
     }
 
     def 'params'() {
@@ -57,7 +52,7 @@ class FactorySpec extends Specification {
         then:
 
         assert ret instanceof String
-        ret.matches('name')
+        ret.matches(/name/)
     }
 
     def 'array'() {
@@ -74,7 +69,7 @@ class FactorySpec extends Specification {
         then:
 
         assert ret instanceof String
-        ret.trim().matches('name')
+        ret.trim().matches(/name/)
     }
 
     def 'closure'() {
@@ -90,6 +85,6 @@ class FactorySpec extends Specification {
         then:
 
         assert ret instanceof TestClosure
-        ret.testValue.matches('name')
+        ret.testValue.matches(/name/)
     }
 }

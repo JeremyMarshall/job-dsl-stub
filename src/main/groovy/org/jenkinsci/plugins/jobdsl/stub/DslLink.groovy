@@ -20,7 +20,10 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
     private String dslInterface
 
     DslLink() {
+        buildDslInterface()
+    }
 
+    String buildDslInterface() {
         List<String> builder = []
 
         factory.categoriesAsList.each { cat ->
