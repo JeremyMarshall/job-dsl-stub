@@ -26,8 +26,7 @@ public class Factory  {
             add(a);
         }
 
-        categoriesAsList = new ArrayList<org.jenkinsci.plugins.jobdsl.stub.model.Category>(categories.values());
-        Arrays.sort(categoriesAsList)
+        buildCategoriesAsList()
 
         //maybe we need to massage the XML
         //such as scm links need to be <scm class="blah">
@@ -62,6 +61,11 @@ public class Factory  {
         }
 
         return a;
+    }
+
+    public void buildCategoriesAsList() {
+        categoriesAsList = new ArrayList<org.jenkinsci.plugins.jobdsl.stub.model.Category>(categories.values());
+        Arrays.sort(categoriesAsList)
     }
 
     public XStream2 getXStream() {

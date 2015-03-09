@@ -24,7 +24,7 @@ public abstract class Category implements ExtensionPoint {
     };
 
     public static ExtensionList<Category> all() {
-        return Jenkins.getInstance().getExtensionList(Category.class);
+            Jenkins.getInstance().getExtensionList(Category.class)
     }
 
     public boolean xstreamAlias(XStream2 xstream) {

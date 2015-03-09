@@ -9,7 +9,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.jenkins-ci.tools:gradle-jpi-plugin:0.10.0'
-        classpath 'net.saliman:gradle-cobertura-plugin:2.2.5'
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.7'
     }
 }
 
