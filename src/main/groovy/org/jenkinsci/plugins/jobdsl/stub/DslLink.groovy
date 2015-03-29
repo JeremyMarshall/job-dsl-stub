@@ -161,7 +161,7 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         return Jenkins.getInstance().getDescriptorOrDie(getClass());
     }
 
-    @Extension // This indicates to Jenkins that this is an implementation of an extension point.
+    @Extension
     public static final class DescriptorImpl extends Descriptor<DslLink> {
         String displayName = "DSL Link";
     }
