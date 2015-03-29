@@ -17,9 +17,15 @@ apply plugin: 'org.jenkins-ci.jpi'
 apply plugin: 'idea'
 apply plugin: 'cobertura'
 apply plugin: 'codenarc'
+apply plugin: 'maven-publish'
+//apply plugin: 'maven'
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
+
+artifacts {
+    archives jar // does not work
+}
 
 codenarc {
     toolVersion = '0.21'
@@ -48,8 +54,8 @@ dependencies {
 }
 
 group = 'org.jenkins-ci.plugins'
-version = '0.0.1-SNAPSHOT'
-description = 'Stub classes to progrematically create jobs'
+version = '0.0.2-SNAPSHOT'
+description = 'Stub classes to programatically create jobs'
 
 jenkinsPlugin {
     coreVersion = '1.595'
