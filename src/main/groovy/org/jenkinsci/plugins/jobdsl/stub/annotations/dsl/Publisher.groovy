@@ -17,7 +17,7 @@ public class Publisher extends Category {
 
     @Override
     public final String getCategory(){
-        return Publisher.class.getName();
+        return 'publishers';
     }
 
     @Override

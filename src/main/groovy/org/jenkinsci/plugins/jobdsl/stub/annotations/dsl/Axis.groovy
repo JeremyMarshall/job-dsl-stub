@@ -17,7 +17,7 @@ public class Axis extends Category {
 
     @Override
     public final String getCategory(){
-        return Axis.class.getName();
+        return 'axes';
     }
 
     @Override

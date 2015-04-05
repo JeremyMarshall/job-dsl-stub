@@ -4,15 +4,17 @@ import com.thoughtworks.xstream.XStream;
 import hudson.Extension;
 import hudson.model.Describable;
 import hudson.model.Descriptor;
-import hudson.model.ManagementLink;
+import hudson.model.ManagementLink
+import hudson.util.XStream2;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.jobdsl.stub.Factory
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category
 import org.jenkinsci.plugins.jobdsl.stub.model.Class
+import org.jenkinsci.plugins.jobdsl.stub.model.Method
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Closure
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Axis
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Step;
+import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Step
 
 @Extension
 public class DslLink extends ManagementLink implements Describable<DslLink> {
@@ -21,6 +23,22 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
 
     DslLink() {
 
+        //do the configure->dsl page
+        buildDslInterface()
+
+        //DslShell.metaClass.steps = { closure ->
+        //    closure.delegate = new Step()
+        //    return closure()
+        //}
+
+        //Step.metaClass.invokeMethod = { String name, Object... args ->
+        //    MetaMethod metaMethod = delegate.metaClass.getMetaMethod(name, *args)
+        //    return invoke(delegate.class, Step, name, *args)
+        //}
+
+    }
+
+    String buildDslInterface() {
         List<String> builder = []
 
         factory.categoriesAsList.each { cat ->
@@ -77,6 +95,26 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         builder
     }
 
+    Object invoke(java.lang.Class clazz, java.lang.Class cat, String name, Object... args) {
+
+        org.jenkinsci.plugins.jobdsl.stub.model.Method m = factory.getCategory(cat).getMethod(name, *args)
+        Object o
+
+        if (m instanceof org.jenkinsci.plugins.jobdsl.stub.model.Method) {
+            o = m.execute(*args)
+        } else {
+            //we don't add this method so pass it up
+            //probably to the Node class
+            //which does similar invokeMethod things
+            //as groovy unwinds the closures until it
+            //gets a match for the method
+            //and Node is very promiscuous with what it will use
+            throw new MissingMethodException(name, clazz, *args)
+        }
+
+        o
+    }
+
     @Override
     public String getDisplayName() {
         return "Jenkins DSL";
@@ -110,7 +148,7 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         return Jenkins.getInstance().getDescriptorOrDie(getClass());
     }
 
-    @Extension // This indicates to Jenkins that this is an implementation of an extension point.
+    @Extension
     public static final class DescriptorImpl extends Descriptor<DslLink> {
         String displayName = "DSL Link";
     }

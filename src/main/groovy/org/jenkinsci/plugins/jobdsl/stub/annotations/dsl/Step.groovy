@@ -16,7 +16,7 @@ public class Step extends Category {
 
     @Override
     public final String getCategory(){
-        return Step.class.getName();
+        return 'steps';
     }
 
     @Override

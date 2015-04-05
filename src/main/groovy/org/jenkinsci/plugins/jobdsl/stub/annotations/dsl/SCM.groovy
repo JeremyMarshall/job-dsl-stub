@@ -18,7 +18,7 @@ public class Scm extends Category {
 
     @Override
     public final String getCategory(){
-        return Scm.class.getName();
+        return 'scm';
     }
 
     @Override

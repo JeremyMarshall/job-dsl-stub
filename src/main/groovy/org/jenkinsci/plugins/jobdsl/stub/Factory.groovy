@@ -41,6 +41,8 @@ public class Factory  {
             }
         }
 
+
+
     }
 
     public Category add(Category a) {
@@ -70,6 +72,10 @@ public class Factory  {
 
     public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( java.lang.Class c) {
         return categories.get(c.getName());
+    }
+
+    public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( String c) {
+        categories.get(c.toLowerCase())
     }
 
     public List<org.jenkinsci.plugins.jobdsl.stub.model.Category> getCategoriesAsList(){
