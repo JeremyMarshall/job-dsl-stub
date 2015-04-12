@@ -16,32 +16,54 @@ abstract class DslShell extends Script implements GroovyInterceptable {
     List returns = new ArrayList()
 
     @Override
-    Object invokeMethod(String name, Object args){
-        if(!category) { //top level eg steps, publishers and so on
+    Object invokeMethod(String name, Object args) {
+
+        Category save
+
+        if (!category) { //top level eg steps, publishers and so on
             category = factory.getCategory(name)
 
-            if(category) {
+            if (category) {
                 groovy.lang.Closure closure = args[0]
                 closure.delegate = category
-                returns << closure()
+                //returns << closure()
+                closure()
                 category = null //clear this out for the next entry
-
-                returns
-            }else{
+                null
+                //returns
+            } else {
                 super.invokeMethod(name, args)
+                null
             }
-        } else if( category ) { //else a method within
+        } else if (category) { //else a method/closure within
             Method m = category.getMethod(name, *args)
             Object o
 
+            save = category
+            category = factory.getCategory(name) ?: category
+
             if (m instanceof Method) {
-                o = m.execute(*args)
-                o
+                returns << m.execute(*args)
+
+                category = save //put it back
+
+            //} else { //maybe a nested stub job{ step{ myStep{...
+            //    if (category != save && category) {
+            //        groovy.lang.Closure closure = args[0]
+            //        closure.delegate = category
+            //        returns << closure()
+            //        category = save //put this back for the next entry
+
+            //        null
             } else {
                 super.invokeMethod(name, args)
+                null
             }
+            //}
         } else { //some other stuff
             super.invokeMethod(name, args)
+            null
         }
+        null
     }
 }

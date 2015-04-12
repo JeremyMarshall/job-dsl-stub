@@ -18,6 +18,7 @@ public class Method implements Comparable<Method> {
     private String name;
     private String description;
     private java.lang.Class closureClass;
+    //private java.lang.Class proxyClass;
     private java.lang.reflect.Method method;
     private List<Parameter> parameters;
 
@@ -26,6 +27,7 @@ public class Method implements Comparable<Method> {
         name = rm.getName();
         description = m.description();
         closureClass = m.closureClass();
+        //proxyClass = m.proxyClass();
         method = rm;
 
         parameters = new ArrayList<Parameter>();

@@ -68,6 +68,10 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         String indentStr = '\t'.multiply(indent)
         String indentStrParm = '\t'.multiply(indent + 1)
 
+        if(!c) {
+            return builder
+        }
+
         builder << "$indentStr// ${c.clazz}"
         builder << ''
 

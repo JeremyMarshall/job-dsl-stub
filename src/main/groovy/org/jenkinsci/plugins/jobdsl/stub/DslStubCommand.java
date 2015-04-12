@@ -57,6 +57,10 @@ import java.net.MalformedURLException;
  *
  * @author Kohsuke Kawaguchi
  */
+
+/**
+ * Modified a bit to support DSL stuff
+ */
 @Extension
 public class DslStubCommand extends CLICommand {
     @Override

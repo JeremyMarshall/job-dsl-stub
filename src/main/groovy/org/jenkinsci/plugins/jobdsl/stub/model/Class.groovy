@@ -22,6 +22,7 @@ public class Class implements Comparable<Class>{
     private String description;
     private String sourcePlugin;
     private Category instance;
+    private Boolean isTopLevel;
 
     public Class(Category b, org.jenkinsci.plugins.jobdsl.stub.model.Category c) {
         clazz = b.getClass();

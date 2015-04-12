@@ -24,5 +24,6 @@ public class Publisher extends Category {
     public int ordinal() {
         150
     }
+
 }
 

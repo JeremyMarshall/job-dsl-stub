@@ -23,5 +23,6 @@ public class Closure extends Category {
     public int ordinal() {
         0
     }
+
 }
 

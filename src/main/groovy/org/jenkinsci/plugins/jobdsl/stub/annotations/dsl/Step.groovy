@@ -23,5 +23,6 @@ public class Step extends Category {
     public int ordinal() {
         100
     }
+
 }
 
