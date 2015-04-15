@@ -1,6 +1,7 @@
-package org.jenkinsci.plugins.jobdsl.stub
+package org.jenkinsci.plugins.jobdsl.stub.cli
 
 import hudson.util.XStream2
+import org.jenkinsci.plugins.jobdsl.stub.Factory
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Closure
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Step
 import org.jenkinsci.plugins.jobdsl.stub.model.Method
@@ -13,7 +14,8 @@ abstract class DslShell extends Script implements GroovyInterceptable {
 
     static Factory factory = new Factory()
     Category category
-    List returns = new ArrayList()
+    CliClosure returns
+    CliClosure curr
 
     @Override
     Object invokeMethod(String name, Object args) {
@@ -26,44 +28,44 @@ abstract class DslShell extends Script implements GroovyInterceptable {
             if (category) {
                 groovy.lang.Closure closure = args[0]
                 closure.delegate = category
-                //returns << closure()
+
+                returns = new CliClosure(name)
+                curr = returns
+
                 closure()
+                //returns.items << closure()
                 category = null //clear this out for the next entry
-                null
-                //returns
             } else {
                 super.invokeMethod(name, args)
-                null
+                //null
             }
         } else if (category) { //else a method/closure within
             Method m = category.getMethod(name, *args)
-            Object o
 
             save = category
             category = factory.getCategory(name) ?: category
 
             if (m instanceof Method) {
-                returns << m.execute(*args)
 
-                category = save //put it back
+                CliClosure save2 = curr
 
-            //} else { //maybe a nested stub job{ step{ myStep{...
-            //    if (category != save && category) {
-            //        groovy.lang.Closure closure = args[0]
-            //        closure.delegate = category
-            //        returns << closure()
-            //        category = save //put this back for the next entry
+                if(m.isProxyClass()){
+                    curr = new CliClosure(name)
+                    save2.items << curr
+                    m.execute(*args)
+                    curr = save2 //put it back
+                    category = save //put it back
+                } else {
+                    curr.items << m.execute(*args)
+                }
+                //CliClosure ret = curr
 
-            //        null
+                //return ret
             } else {
                 super.invokeMethod(name, args)
-                null
             }
-            //}
         } else { //some other stuff
             super.invokeMethod(name, args)
-            null
         }
-        null
     }
 }

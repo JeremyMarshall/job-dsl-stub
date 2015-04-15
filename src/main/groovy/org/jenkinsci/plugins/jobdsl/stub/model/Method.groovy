@@ -1,4 +1,6 @@
-package org.jenkinsci.plugins.jobdsl.stub.model;
+package org.jenkinsci.plugins.jobdsl.stub.model
+
+import org.jenkinsci.plugins.jobdsl.stub.NoProxy;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
@@ -18,7 +20,7 @@ public class Method implements Comparable<Method> {
     private String name;
     private String description;
     private java.lang.Class closureClass;
-    //private java.lang.Class proxyClass;
+    private java.lang.Class proxyClass;
     private java.lang.reflect.Method method;
     private List<Parameter> parameters;
 
@@ -27,7 +29,7 @@ public class Method implements Comparable<Method> {
         name = rm.getName();
         description = m.description();
         closureClass = m.closureClass();
-        //proxyClass = m.proxyClass();
+        proxyClass = m.proxyClass();
         method = rm;
 
         parameters = new ArrayList<Parameter>();
@@ -137,6 +139,14 @@ public class Method implements Comparable<Method> {
             }
         }
         ret
+    }
+
+    public boolean isProxyClass(){
+        proxyClass != NoProxy
+    }
+
+    public Object getProxyClass(){
+        this.proxyClass
     }
 
 }

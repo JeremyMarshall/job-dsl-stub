@@ -17,6 +17,7 @@ public abstract class Category implements ExtensionPoint {
     public abstract String getDescription();
     public abstract String getCategory();
     public abstract int ordinal();
+    public Object returns = []
 
     //override this in classes which present methods
     public boolean hasMethods(){
@@ -48,6 +49,8 @@ public abstract class Category implements ExtensionPoint {
         closure.setDelegate(closureDelegate);
         closure.setResolveStrategy(groovy.lang.Closure.DELEGATE_FIRST);
         closure();
+
+        returns << closureDelegate
         return closureDelegate;
     }
 }

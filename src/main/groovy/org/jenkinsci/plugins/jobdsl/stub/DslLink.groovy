@@ -78,7 +78,18 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         c.methods.sort().each { m ->
             builder << "$indentStr// ${m.description}"
 
-            if(m.closureClass == NoClosure ) {
+            if (m.isProxyClass()){
+                builder << "$indentStr${m.name} {"
+
+                Category p = m.getProxyClass().newInstance()
+
+                org.jenkinsci.plugins.jobdsl.stub.model.Category cl2 = factory.getCategory(p.getName())
+                //org.jenkinsci.plugins.jobdsl.stub.model.Class cl3 = cl2.classes.find { it.clazz == m.closureClass }
+                cl2.classes.each { c2 ->
+                    builder += classDisplay(c2, indent + 1)
+                    builder << "$indentStr}"
+                }
+            } else if(m.closureClass == NoClosure ) {
                 if (m.parameters.size() > 0) {
                     builder << "$indentStr${m.name}"
                     m.parameters.each { p ->

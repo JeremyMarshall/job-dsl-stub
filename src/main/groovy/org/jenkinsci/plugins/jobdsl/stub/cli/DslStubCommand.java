@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.jobdsl.stub;
+package org.jenkinsci.plugins.jobdsl.stub.cli;
 
 /*
  * The MIT License
@@ -26,31 +26,24 @@ package org.jenkinsci.plugins.jobdsl.stub;
 
 import groovy.lang.GroovyShell;
 import groovy.lang.Binding;
-import groovy.lang.Script;
 import hudson.cli.CLICommand;
 import hudson.cli.util.ScriptLoader;
 import hudson.model.AbstractProject;
 import jenkins.model.Jenkins;
 import hudson.model.Item;
 import hudson.model.Run;
-import hudson.remoting.Callable;
-import hudson.AbortException;
 import hudson.Extension;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.jenkinsci.plugins.jobdsl.stub.Factory;
+import org.jenkinsci.plugins.jobdsl.stub.cli.DslShell;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineException;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.io.File;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URL;
-import java.net.MalformedURLException;
 
 /**
  * Executes the specified groovy script.
@@ -112,12 +105,13 @@ public class DslStubCommand extends CLICommand {
 
         Factory f = new Factory();
 
-        for(Object o: script.getReturns()) {
-            //f.getXStream().toXML(o, stdout);
-            f.getXStream().toXML(o, out);
-            out.println();
-        }
+        //for(Object o: script.getReturns()) {
+        //    //f.getXStream().toXML(o, stdout);
+        //    f.getXStream().toXML(o, out);
+        //    out.println();
+        //}
 
+        f.getXStream().toXML(script.getReturns(), out);
         return 0;
     }
 
