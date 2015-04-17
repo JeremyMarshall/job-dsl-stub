@@ -1,28 +1,27 @@
-package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl;
+package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl
 
-import hudson.Extension;
+import hudson.Extension
 
 /**
  * Created by jeremymarshall on 31/12/2014.
  */
 
 @Extension
-public class Step extends Category {
+class Step extends Category {
     @Override
-    public String getName() { return "steps";}
+    @SuppressWarnings('GetterMethodCouldBeProperty')
+    String getName() { 'steps' }
 
     @Override
-    public String getDescription() { return "Classes for Build steps";}
+    @SuppressWarnings('GetterMethodCouldBeProperty')
+    String getDescription() { 'Classes for Build steps' }
 
     @Override
-    public final String getCategory(){
-        return 'steps';
-    }
+    @SuppressWarnings('GetterMethodCouldBeProperty')
+    final String getCategory() { 'steps' }
 
     @Override
-    public int ordinal() {
-        100
-    }
+    int ordinal() { 100 }
 
 }
 

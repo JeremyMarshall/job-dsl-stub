@@ -1,41 +1,20 @@
 package org.jenkinsci.plugins.jobdsl.stub
 
-import com.thoughtworks.xstream.XStream;
-import hudson.Extension;
-import hudson.model.Describable;
-import hudson.model.Descriptor;
+import hudson.Extension
+import hudson.model.Describable
+import hudson.model.Descriptor
 import hudson.model.ManagementLink
-import hudson.util.XStream2;
-import jenkins.model.Jenkins;
-import org.jenkinsci.plugins.jobdsl.stub.Factory
+import jenkins.model.Jenkins
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category
-import org.jenkinsci.plugins.jobdsl.stub.model.Class
-import org.jenkinsci.plugins.jobdsl.stub.model.Method
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Closure
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Axis
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Step
 
 @Extension
-public class DslLink extends ManagementLink implements Describable<DslLink> {
-    private Factory factory = new Factory();
+class DslLink extends ManagementLink implements Describable<DslLink> {
+    private final Factory factory = new Factory()
     private String dslInterface
 
     DslLink() {
-
-        //do the configure->dsl page
         buildDslInterface()
-
-        //DslShell.metaClass.steps = { closure ->
-        //    closure.delegate = new Step()
-        //    return closure()
-        //}
-
-        //Step.metaClass.invokeMethod = { String name, Object... args ->
-        //    MetaMethod metaMethod = delegate.metaClass.getMetaMethod(name, *args)
-        //    return invoke(delegate.class, Step, name, *args)
-        //}
-
     }
 
     String buildDslInterface() {
@@ -58,17 +37,17 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
             builder << '}'
             builder << ''
         }
-        dslInterface = builder.join("\n")
+        dslInterface = builder.join('\n')
     }
 
-    private final List<String> classDisplay(org.jenkinsci.plugins.jobdsl.stub.model.Class c, int indent) {
+    final List<String> classDisplay(org.jenkinsci.plugins.jobdsl.stub.model.Class c, int indent) {
 
         List<String> builder = []
         indent++
-        String indentStr = '\t'.multiply(indent)
-        String indentStrParm = '\t'.multiply(indent + 1)
+        String indentStr = '\t' * indent
+        String indentStrParm = '\t' * (indent + 1)
 
-        if(!c) {
+        if ( !c ) {
             return builder
         }
 
@@ -78,18 +57,18 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         c.methods.sort().each { m ->
             builder << "$indentStr// ${m.description}"
 
-            if (m.isProxyClass()){
+            if ( m.isProxyClass() ) {
                 builder << "$indentStr${m.name} {"
 
                 Category p = m.getProxyClass().newInstance()
 
-                org.jenkinsci.plugins.jobdsl.stub.model.Category cl2 = factory.getCategory(p.getName())
+                Category cl2 = factory.getCategory(p.name)
                 //org.jenkinsci.plugins.jobdsl.stub.model.Class cl3 = cl2.classes.find { it.clazz == m.closureClass }
                 cl2.classes.each { c2 ->
                     builder += classDisplay(c2, indent + 1)
                     builder << "$indentStr}"
                 }
-            } else if(m.closureClass == NoClosure ) {
+            } else if ( m.closureClass == NoClosure ) {
                 if (m.parameters.size() > 0) {
                     builder << "$indentStr${m.name}"
                     m.parameters.each { p ->
@@ -110,7 +89,7 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
         builder
     }
 
-    Object invoke(java.lang.Class clazz, java.lang.Class cat, String name, Object... args) {
+    Object invoke( Class clazz, Class cat, String name, Object... args ) {
 
         org.jenkinsci.plugins.jobdsl.stub.model.Method m = factory.getCategory(cat).getMethod(name, *args)
         Object o
@@ -131,40 +110,44 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
     }
 
     @Override
-    public String getDisplayName() {
-        return "Jenkins DSL";
+    @SuppressWarnings('GetterMethodCouldBeProperty')
+    String getDisplayName() {
+        'Jenkins DSL'
     }
 
     @Override
-    public String getDescription() {
-        return "Stubs for Job-DSL";
+    @SuppressWarnings('GetterMethodCouldBeProperty')
+    String getDescription() {
+        'Stubs for Job-DSL'
     }
 
     @Override
-    public String getIconFileName() {
-        return "aaa.png";
+    @SuppressWarnings('GetterMethodCouldBeProperty')
+    String getIconFileName() {
+        'aaa.png'
     }
 
     @Override
-    public String getUrlName() {
-        return "dsl";
+    @SuppressWarnings('GetterMethodCouldBeProperty')
+    String getUrlName() {
+        'dsl'
     }
 
-    public String getDslInterface() {
-        return dslInterface
+    String getDslInterface() {
+        dslInterface
     }
 
-    public Factory getFactory() {
-        return factory;
+    Factory getFactory() {
+        factory
     }
 
-    @SuppressWarnings("unchecked")
-    public Descriptor<DslLink> getDescriptor() {
-        return Jenkins.getInstance().getDescriptorOrDie(getClass());
+    @SuppressWarnings( 'unchecked' )
+    Descriptor<DslLink> getDescriptor() {
+        Jenkins.instance.getDescriptorOrDie(getClass())
     }
 
     @Extension
-    public static final class DescriptorImpl extends Descriptor<DslLink> {
-        String displayName = "DSL Link";
+    static final class DescriptorImpl extends Descriptor<DslLink> {
+        String displayName = 'DSL Link'
     }
 }

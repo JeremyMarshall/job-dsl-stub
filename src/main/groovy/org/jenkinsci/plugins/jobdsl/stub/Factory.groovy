@@ -1,54 +1,50 @@
 package org.jenkinsci.plugins.jobdsl.stub
 
-import com.thoughtworks.xstream.XStream
 import hudson.util.XStream2
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category
+//import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category
+import org.jenkinsci.plugins.jobdsl.stub.model.Category
 import org.jenkinsci.plugins.jobdsl.stub.model.Class
 
 /**
  * Created by jeremymarshall on 31/12/2014.
  */
 
-public class Factory  {
+class Factory  {
 
-    private Map<String, org.jenkinsci.plugins.jobdsl.stub.model.Category> categories;
-    private List<org.jenkinsci.plugins.jobdsl.stub.model.Category> categoriesAsList;
-    private XStream2 xstream;
+    private final Map<String, org.jenkinsci.plugins.jobdsl.stub.model.Category> categories
+    private final List<org.jenkinsci.plugins.jobdsl.stub.model.Category> categoriesAsList
+    private final XStream2 xstream
 
-    public Factory() {
-        categories = new TreeMap<String, org.jenkinsci.plugins.jobdsl.stub.model.Category>();
+    Factory() {
+        categories = new TreeMap<String, org.jenkinsci.plugins.jobdsl.stub.model.Category>()
 
         xstream = new XStream2()
         //scm classes need massaging as they have to appear
         //<scm class='blah'>...<scm>
         xstream.autodetectAnnotations(true)
-        for (Category a : Category.all()) {
-            add(a);
+        for (org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category a : org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category.all()) {
+            add(a)
         }
 
-        categoriesAsList = new ArrayList<org.jenkinsci.plugins.jobdsl.stub.model.Category>(categories.values());
+        categoriesAsList = new ArrayList<org.jenkinsci.plugins.jobdsl.stub.model.Category>(categories.values())
         Arrays.sort(categoriesAsList)
 
         //maybe we need to massage the XML
         //such as scm links need to be <scm class="blah">
         //rather than <blah>...
-        for(Map.Entry<String,org.jenkinsci.plugins.jobdsl.stub.model.Category> entry : categories.entrySet()) {
-            String key = entry.getKey();
-            org.jenkinsci.plugins.jobdsl.stub.model.Category value = entry.getValue();
+        for ( Map.Entry<String,org.jenkinsci.plugins.jobdsl.stub.model.Category> entry : categories.entrySet()) {
+            org.jenkinsci.plugins.jobdsl.stub.model.Category value = entry.value
 
-            for(Class c : value.getClasses()) {
-                c.getInstance(false).xstreamAlias(xstream);
+            for ( Class c : value.classes ) {
+                c.getInstance(false).xstreamAlias(xstream)
             }
         }
-
-
-
     }
 
-    public Category add(Category a) {
+    org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category add(org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Category a) {
 
-        if(!categories.containsKey(a.getCategory())) {
-            categories.put(a.getCategory(), new org.jenkinsci.plugins.jobdsl.stub.model.Category(a));
+        if ( !categories.containsKey(a.category )) {
+            categories.put(a.category, new org.jenkinsci.plugins.jobdsl.stub.model.Category(a))
         }
 
         //so the individual categories are extension points too so
@@ -57,29 +53,29 @@ public class Factory  {
 
         //if there are no methods it must be a category (step, scm, etc)
         //don't forget to get your concrete classes to set this to true
-        if( a.hasMethods()) {
-            categories.get(a.getCategory()).add(a);
+        if ( a.hasMethods()) {
+            categories.get(a.category ).add(a)
         } else {
-            categories.get(a.getCategory()).update(a);
+            categories.get(a.category ).update(a)
         }
 
-        return a;
+        a
     }
 
-    public XStream2 getXStream() {
-        return xstream;
+    XStream2 getXStream() {
+        xstream
     }
 
-    public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( java.lang.Class c) {
-        return categories.get(c.getName());
+    Category getCategory( Class c) {
+        categories.get(c.name)
     }
 
-    public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( String c) {
+    Category getCategory( String c) {
         categories.get(c.toLowerCase())
     }
 
-    public List<org.jenkinsci.plugins.jobdsl.stub.model.Category> getCategoriesAsList(){
-        return categoriesAsList.sort(true)
+    List<Category> getCategoriesAsList() {
+        categoriesAsList.sort(true)
     }
 
 }

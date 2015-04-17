@@ -1,7 +1,7 @@
-package org.jenkinsci.plugins.jobdsl.stub;
+package org.jenkinsci.plugins.jobdsl.stub
 
 /**
  * Created by jeremymarshall on 26/01/2015.
  */
-public class DslNoClosureClass extends Exception {
-}
+class DslNoClosureClass extends Exception { }
+
