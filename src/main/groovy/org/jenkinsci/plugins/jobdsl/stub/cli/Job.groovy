@@ -62,4 +62,18 @@ class Job extends Project {//implements GroovyInterceptable{
         CliClosure i = runProxy(closure, Publisher, 'publishers');
         return i;
     }
+
+    @Method(description="Set the job name", closureClass = NoClosure, proxyClass = NoProxy)
+    public Object jobName(@Parameter(description="name") String theName){
+        CliClosure i = new CliClosure('name')
+        i.items << theName
+        return i
+    }
+
+    @Method(description="Set the job description", closureClass = NoClosure, proxyClass = NoProxy)
+    public Object jobDescription(@Parameter(description="description") String theDescription){
+        CliClosure i = new CliClosure('desc')
+        i.items << theDescription
+        return i
+    }
 }
