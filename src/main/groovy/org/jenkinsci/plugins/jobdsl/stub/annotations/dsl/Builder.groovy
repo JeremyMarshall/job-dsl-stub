@@ -7,16 +7,16 @@ import hudson.Extension;
  */
 
 @Extension
-public class Step extends Category {
+public class Builder extends Category {
     @Override
-    public String getName() { return "steps";}
+    public String getName() { return "builders";}
 
     @Override
     public String getDescription() { return "Classes for Build steps";}
 
     @Override
     public final String getCategory(){
-        return 'steps';
+        return 'builders';
     }
 
     @Override

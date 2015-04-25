@@ -75,7 +75,8 @@ public class Factory  {
     }
 
     public org.jenkinsci.plugins.jobdsl.stub.model.Category getCategory( String c) {
-        categories.get(c.toLowerCase())
+        //categories.get(c.toLowerCase())
+        categories.get(c)
     }
 
     public List<org.jenkinsci.plugins.jobdsl.stub.model.Category> getCategoriesAsList(){

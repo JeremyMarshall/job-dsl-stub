@@ -3,7 +3,7 @@ package org.jenkinsci.plugins.jobdsl.stub.cli
 import hudson.util.XStream2
 import org.jenkinsci.plugins.jobdsl.stub.Factory
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Closure
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Step
+import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Publisher
 import org.jenkinsci.plugins.jobdsl.stub.model.Method
 import org.jenkinsci.plugins.jobdsl.stub.model.Category
 
@@ -14,7 +14,7 @@ abstract class DslShell extends Script implements GroovyInterceptable {
 
     static Factory factory = new Factory()
     Category category
-    CliClosure returns
+    CliClosure returns = new CliClosure('top')
     CliClosure curr
 
     @Override
@@ -29,8 +29,9 @@ abstract class DslShell extends Script implements GroovyInterceptable {
                 groovy.lang.Closure closure = args[0]
                 closure.delegate = category
 
-                returns = new CliClosure(name)
-                curr = returns
+                //curr = new CliClosure(name)
+                curr = new CliClosure(category.description)
+                returns.items << curr
 
                 closure()
                 //returns.items << closure()

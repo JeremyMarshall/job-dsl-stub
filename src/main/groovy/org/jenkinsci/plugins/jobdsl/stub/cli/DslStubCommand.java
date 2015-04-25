@@ -24,6 +24,7 @@ package org.jenkinsci.plugins.jobdsl.stub.cli;
  * THE SOFTWARE.
  */
 
+import com.thoughtworks.xstream.XStream;
 import groovy.lang.GroovyShell;
 import groovy.lang.Binding;
 import hudson.cli.CLICommand;
@@ -104,14 +105,19 @@ public class DslStubCommand extends CLICommand {
         script.run();
 
         Factory f = new Factory();
+        XStream xs = f.getXStream();
 
-        //for(Object o: script.getReturns()) {
-        //    //f.getXStream().toXML(o, stdout);
-        //    f.getXStream().toXML(o, out);
-        //    out.println();
-        //}
+        for(Object o: script.getReturns().getItems()) {
 
-        f.getXStream().toXML(script.getReturns(), out);
+            if(o instanceof CliClosure) {
+                CliClosure cl = (CliClosure) o;
+                //f.getXStream().toXML(o, out);
+
+                xs.alias(cl.getName(), CliClosure.class);
+                xs.toXML(cl, out);
+                out.println();
+            }
+        }
         return 0;
     }
 

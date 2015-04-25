@@ -14,7 +14,7 @@ import org.jenkinsci.plugins.jobdsl.stub.model.Method
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Closure
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Axis
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method
-import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Step
+import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Publisher
 
 @Extension
 public class DslLink extends ManagementLink implements Describable<DslLink> {
@@ -85,10 +85,14 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
 
                 org.jenkinsci.plugins.jobdsl.stub.model.Category cl2 = factory.getCategory(p.getName())
                 //org.jenkinsci.plugins.jobdsl.stub.model.Class cl3 = cl2.classes.find { it.clazz == m.closureClass }
-                cl2.classes.each { c2 ->
-                    builder += classDisplay(c2, indent + 1)
-                    builder << "$indentStr}"
+
+                if (cl2) { //there may be no methods on the proxy class
+                    cl2.classes.each { c2 ->
+                        builder += classDisplay(c2, indent + 1)
+                    }
                 }
+                builder << "$indentStr}"
+
             } else if(m.closureClass == NoClosure ) {
                 if (m.parameters.size() > 0) {
                     builder << "$indentStr${m.name}"

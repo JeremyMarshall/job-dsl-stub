@@ -3,10 +3,11 @@ package org.jenkinsci.plugins.jobdsl.stub.annotations.dsl
 import com.thoughtworks.xstream.XStream;
 import hudson.ExtensionList;
 import hudson.ExtensionPoint
-import hudson.util.XStream2;
-import jenkins.model.Jenkins;
-import org.jenkinsci.plugins.jobdsl.stub.DslClosureUnsupported;
-import org.jenkinsci.plugins.jobdsl.stub.DslNoClosureClass;
+import hudson.util.XStream2
+import jenkins.model.Jenkins
+import org.jenkinsci.plugins.jobdsl.stub.DslClosureUnsupported
+import org.jenkinsci.plugins.jobdsl.stub.DslNoClosureClass
+import org.jenkinsci.plugins.jobdsl.stub.cli.CliClosure
 
 /**
  * Created by jeremymarshall on 30/12/2014.
@@ -52,6 +53,23 @@ public abstract class Category implements ExtensionPoint {
 
         returns << closureDelegate
         return closureDelegate;
+    }
+
+    protected final Object runProxy(Object closure, java.lang.Class closureClass, String section)
+            throws DslClosureUnsupported, DslNoClosureClass, IllegalAccessException, InstantiationException {
+
+        def ret = new CliClosure(section)
+
+        //ret.items << this.runClosure(closure, closureClass)
+        this.runClosure(closure, closureClass)
+
+        ret
+    }
+
+    protected  CliClosure stringAttribute(String theAttribute, String theValue){
+        CliClosure i = new CliClosure(theAttribute)
+        i.items << theValue
+        return i
     }
 }
 

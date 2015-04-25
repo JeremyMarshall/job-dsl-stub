@@ -5,7 +5,8 @@ package org.jenkinsci.plugins.jobdsl.stub.cli
  */
 class CliClosure {
     String name
-    Object items = []
+    boolean isSingle = false
+    List<? extends Object> items = []
 
     CliClosure(String name) {
         this.name = name
