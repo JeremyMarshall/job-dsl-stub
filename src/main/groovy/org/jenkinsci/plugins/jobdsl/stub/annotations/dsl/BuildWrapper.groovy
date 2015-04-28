@@ -13,7 +13,7 @@ public class BuildWrapper extends Category {
 
     @Override
     public final String getCategory(){
-        return 'builderWrapper';
+        return 'buildWrappers';
     }
 
     @Override

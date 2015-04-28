@@ -15,6 +15,7 @@ import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Closure
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Axis
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Method
 import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.Publisher
+import org.jenkinsci.plugins.jobdsl.stub.annotations.dsl.BuildWrapper
 
 @Extension
 public class DslLink extends ManagementLink implements Describable<DslLink> {
@@ -84,8 +85,8 @@ public class DslLink extends ManagementLink implements Describable<DslLink> {
                 Category p = m.getProxyClass().newInstance()
 
                 org.jenkinsci.plugins.jobdsl.stub.model.Category cl2 = factory.getCategory(p.getName())
-                //org.jenkinsci.plugins.jobdsl.stub.model.Class cl3 = cl2.classes.find { it.clazz == m.closureClass }
-
+                Factory ff = factory
+                String ss = p.getName()
                 if (cl2) { //there may be no methods on the proxy class
                     cl2.classes.each { c2 ->
                         builder += classDisplay(c2, indent + 1)

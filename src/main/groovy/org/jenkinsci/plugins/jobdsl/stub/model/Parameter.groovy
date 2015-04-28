@@ -109,7 +109,7 @@ public class Parameter {
         //look through remaining params to see if they fit if the last param a vararg and not yet matched
         if (!ret && isVaArg) {
             for (int j = currentParam; j < parameterTypes.size(); j++) {
-                ret = genericType == parameterTypes.get(j).getName();
+                ret = genericType ==  convertType( parameterTypes.get(j))
 
                 //stop looking if we don't match
                 if (!ret) {
